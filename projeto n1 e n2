@@ -1,0 +1,469 @@
+//Projeto   : Projeto Bolo no Pote - ADSA01/2022
+// * Criado em : 22/11/2022
+// * Autores   : Gabriel Alexandre 
+// *             Luiz Eduardo
+// *             Luísa Vitória
+// *             Jeniffer Karoline
+// *             João Pedro
+// * Coordenação, Modelagem e Revisão final: Gabriel e Luiz
+// * apresentação de receitas: Luiz, Luísa e Jeniffer
+// * Apresentação do código: Gabriel e João Pedro
+// *             
+// * Finalidade: Projeto Bolos no Pote
+// * 
+// * O bolo no pote virou uma sensação e está longe de sair de moda, diversas pessoas estão
+//começando seu próprio negócio com eles.
+//Começar a pôr a mão na massa não vai te exigir nem muito investimento nem sacrifício.
+//Muitas receitas de bolos no pote não gastam mais do que R$ 60 para fazer uma receita para 15
+//unidades.
+//E essa é uma das maiores vantagens em começar a vender bolos no pote. Inclusive, com
+//a chegada do natal, você pode até mesmo apostar em bolos para essa época do ano!
+//Assim, foram reunidas três de receitas de coberturas, de bolos no pote.
+// * DESAFIO
+//Desenvolver um software que ao digitar os valores dos ingredientes com suas respectivas
+//medidas, devolva para o usuário qual/quais receita(s) ele poderá fazer dentro do limite de gasto
+//proposto na contextualização.
+//RESULTADOS/ENTREGAS ESPERADOS
+//Desenvolver um software, onde:
+//1. Resolva a situação problema proposta. Com as três receitas. Os dados podem ser fictícios
+//(valores e medidas).
+//2. Calcule automaticamente o valor de custo de cada bolo no pote (incluso o valor da
+//embalagem);
+//3. Calcule quanto o usuário irá ter de lucro (em R$ e em %), dado um valor de venda.
+//4. O software pode ser rodado no console.
+//5. O software deverá ser apresentado para o(s) professor(es) da(s) disciplina(s)
+//participante(s). “Rodando”.
+
+
+package bolonopote;
+import java.util.Scanner;
+
+public class BoloNoPote {
+
+    public static void main(String[] args) {
+
+        // variáveis
+        Scanner sc = new Scanner(System.in);
+        String linha = "---------------------------------------------------------------";
+        boolean sair = false;
+        boolean invalida = true;
+        String opcao;
+        int num_receita = -1;
+        String[][] ingredientes;
+        double[][] valores;
+        double[] valores_receita = new double[8];
+
+        String[] receitas_nomes = {
+            "Leite ninho com morangos",
+            "Dois Amores",
+            "Maracujá"
+        };
+
+        String[][] receitas = {
+            {
+                "300 g de açúcar",
+                "300 g de margarina gelada",
+                "4 ovos médios",
+                "300 g de farinha de trigo com fermento"
+            },
+            {
+                "2 latas de leite condensado (300 gramas cada)",
+                "2 latas de creme de leite (300 gramas cada)",
+                "6 colheres (de sopa) de leite ninho (5 gramas cada)",
+                "20 morangos"
+            },
+            {
+                "2 latas de leite condensado (300 gramas cada)",
+                "2 latas de creme de leite (300 gramas cada)",
+                "6 colheres de chocolate em pó (100 gramas cada)"
+            },
+            {
+                "2 xícaras de suco de maracujá (240 ml cada)",
+                "4 colheres de amido de milho (5 gramas cada)",
+                "6 gemas",
+                "1 xícara de água (250 ml)",
+                "1 e 1/2 xícara de açúcar (200 gramas)",
+                "200 ml de leite",
+                "1 colher (de sopa) de manteiga. (50 gramas)"
+            }
+        };
+
+        String[][] ingrediente_ninho = {
+            {"Açúcar", "g"},
+            {"Margarina", "g"},
+            {"Ovos", "un"},
+            {"Farinha de trigo com fermento", "g"},
+            {"Creme de Leite", "g"},
+            {"Leite Condensado", "g"},
+            {"Leite Ninho", "g"},
+            {"Morangos", "un"},
+            {"Pote 220ml", "un"}
+        };
+        double[][] valores_ninho = {
+            {300.0, 300.0, 4.0, 300.0, 500.0, 500.0, 500.0, 20.0, 15.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+        };
+
+        String[][] ingrediente_dois = {
+            {"Açúcar", "g"},
+            {"Margarina", "g"},
+            {"Ovos", "un"},
+            {"Farinha de trigo com fermento", "g"},
+            {"Creme de Leite", "g"},
+            {"Leite Condensado", "g"},
+            {"Chocolate em pó", "g"},
+            {"Pote 220ml", "un"}
+        };
+
+        double[][] valores_dois = {
+            {300.0, 300.0, 4.0, 300.0, 600.0, 600.0, 600.0, 15.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+        };
+
+        String[][] ingrediente_maracuja = {
+            {"Açúcar", "g"},
+            {"Margarina", "g"},
+            {"Ovos", "un"},
+            {"Suco de Maracujá", "ml"},
+            {"Amido de milho", "g"},
+            {"Água", "ml"},
+            {"Leite", "ml"},
+            {"Manteiga", "g"},
+            {"Pote 220ml", "un"}
+
+        };
+
+        double[][] valores_maracuja = {
+            {500.0, 300.0, 6.0, 300.0, 20.0, 20.0, 250.0, 200.0, 15.0, 15.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+        };
+
+        // Fim variáveis
+        do {
+            // menu_receitas
+            do {
+                System.out.println("\n" + linha + "\nBOLO NO POTE\n\nReceitas:");
+                for (int i = 0; i < receitas_nomes.length; i++) {
+                    System.out.printf(" %d - %s\n", (i + 1), receitas_nomes[i]);
+                }
+                System.out.print(" 0 - Sair\nDigite o número da receita > ");
+
+                opcao = sc.nextLine();
+
+                if (int_no_intervalo(opcao, 0, 3)) {
+                    invalida = false;
+                    num_receita = Integer.parseInt(opcao);
+                    sair = (num_receita == 0) ? true : false;
+                } else {
+                    System.out.println("Receita inválida!\n\n");
+                }
+            } while (invalida);
+            // fim menu_receitas
+
+            if (!sair) {
+                // set_receita
+                if (num_receita == 1) {
+                    ingredientes = ingrediente_ninho;
+                    valores = valores_ninho;
+                } else if (num_receita == 2) {
+                    ingredientes = ingrediente_dois;
+                    valores = valores_dois;
+                } else {
+                    ingredientes = ingrediente_maracuja;
+                    valores = valores_maracuja;
+                }
+                // fim set_receita
+
+                // mostra_receita
+                System.out.println(linha + "\nINGREDIENTES:\n\nPara a massa do bolo:");
+
+                // Massa
+                for (int i = 0; i < receitas[0].length; i++) {
+                    System.out.println("• " + receitas[0][i]);
+                }
+
+                System.out.println("\nRecheio e cobertura:");
+
+                // Recheio e cobertura
+                for (int i = 0; i < receitas[num_receita].length; i++) {
+                    System.out.println("• " + receitas[num_receita][i]);
+                }
+                System.out.println();
+                // fim mostra_receita
+
+                // quantidades_e_valores
+                System.out.println(linha + "\nSIMULAÇÃO DE VALORES DE COMPRA:\n"
+                        + "* Digite a letra 'M' a qualquer momento para voltar ao Menu.\n");
+                valores_receita[0] = 0.0;
+                for (int i = 0; i < ingredientes.length; i++) {
+                    if (opcao.equalsIgnoreCase("m")) {
+                        break;
+                    }
+                    do {
+                        invalida = true;
+                        System.out.print("Quantidade de " + ingredientes[i][0] + " (" + ingredientes[i][1] + "): ");
+                        opcao = sc.nextLine();
+                        if (opcao.equalsIgnoreCase("m")) {
+                            break;
+                        }
+                        if (double_valido(opcao)) {
+                            valores[1][i] = Double.parseDouble(opcao);
+                            if (valores[1][i] < valores[0][i]) {
+                                System.out.printf("Quantidade mínima: %.2f %s. Digite novamente...\n", valores[0][i], ingredientes[i][1]);
+                            } else {
+                                invalida = false;
+                            }
+                        } else {
+                            System.out.println("Quantidade inválida!");
+                        }
+                    } while (invalida);
+                    if (opcao.equalsIgnoreCase("m")) {
+                        break;
+                    } else {
+                        do {
+                            invalida = true;
+                            System.out.printf("Preço de %.2f " + ingredientes[i][1] + " de " + ingredientes[i][0] + ": ", valores[1][i]);
+                            opcao = sc.nextLine();
+                            if (opcao.equalsIgnoreCase("m")) {
+                                break;
+                            }
+                            if (double_valido(opcao)) {
+                                valores[2][i] = Double.parseDouble(opcao);
+                                if (valores[2][i] < 0.0) {
+                                    System.out.println("Valor inválido para o preço!");
+                                } else {
+                                    invalida = false;
+                                }
+                            } else {
+                                System.out.println("Preço inválido!");
+                            }
+                        } while (invalida);
+                        valores[3][i] = (valores[2][i] / valores[1][i]) * valores[0][i];
+                        valores_receita[0] += valores[3][i];
+
+                        System.out.println();
+                    }
+                }
+
+                if (!opcao.equalsIgnoreCase("m")) {
+                    do {
+                        System.out.print("Rendimento da receita (unidades): ");
+                        opcao = sc.nextLine();
+                        if (opcao.equalsIgnoreCase("m")) {
+                            break;
+                        }
+                        if (int_valido(opcao)) {
+                            valores_receita[1] = Double.parseDouble(opcao);
+                            if (valores_receita[1] <= 0.0) {
+                                System.out.println("Valor inválido para a quantidade.");
+                            }
+                        } else {
+                            System.out.println("Quantidade inválida!");
+                        }
+                    } while (valores_receita[1] <= 0.0);
+
+                    do {
+                        System.out.print("Preço de venda (unitário): R$ ");
+                        opcao = sc.nextLine();
+                        if (opcao.equalsIgnoreCase("m")) {
+                            break;
+                        }
+                        if (double_valido(opcao)) {
+                            valores_receita[2] = Double.parseDouble(opcao);
+                            if (valores_receita[2] <= 0.0) {
+                                System.out.println("Valor inválido para o preço de venda.");
+                            }
+                        } else {
+                            System.out.println("Preço inválido!");
+                        }
+
+                    } while (valores_receita[2] <= 0.0);
+                }
+                // fim quantidades_e_valores
+
+                if (!opcao.equalsIgnoreCase("m")) {
+                    // exibe_custo_ingredientes
+                    System.out.printf("\n" + linha + "\nRECEITA: %s\n\nCusto unitário dos ingredientes:\n", receitas_nomes[num_receita - 1]);
+                    for (int i = 0; i < ingredientes.length; i++) {
+                        int tamanho = ingredientes[i][0].length();
+                        int espaco = (30 - tamanho) / 2;
+                        String alinhamento = repete(". ", espaco + 2);
+                        System.out.printf("%s" + ((tamanho % 2 != 0)
+                                ? (" " + alinhamento)
+                                : alinhamento)
+                                + ": R$ %.2f\n", ingredientes[i][0], valores[3][i]);
+                    }
+                    // fim exibe_custo_ingredientes
+
+                    // processa_resultado
+                    // venda_total     = preco_de_venda    * rendimento
+                    valores_receita[3] = valores_receita[2] * valores_receita[1];
+
+                    // lucro_receita_valor  = venda_total - custo_total
+                    valores_receita[4] = valores_receita[3] - valores_receita[0];
+
+                    // lucro_percent_receita   = (lucro_receita_valor / custo_total) *100
+                    valores_receita[5] = (valores_receita[4] / valores_receita[0]) * 100;
+
+                    // custo_unitario = custo_total / rendimento
+                    valores_receita[6] = valores_receita[0] / valores_receita[1];
+
+                    // lucro_unitario_valor = preco_de_venda - custo_unitario
+                    valores_receita[7] = valores_receita[2] - valores_receita[6];
+
+                    // fim processa_resultado
+                    System.out.println("\nANÁLISE DE VIABILIDADE:\n");
+
+                    System.out.printf("Rendimento  . . . . . . : %.0f unidades\n\n", valores_receita[1]);
+                    System.out.printf("Preço de venda total. . : R$ %.2f\n", valores_receita[3]);
+                    System.out.printf("Custo total da receita. : R$ %.2f\n", valores_receita[0]);
+                    System.out.printf("Lucro por receita . . . : R$ %.2f\n\n", valores_receita[4]);
+                    System.out.printf("Preço de venda unitário : R$ %.2f\n", valores_receita[2]);
+                    System.out.printf("Custo unitário  . . . . : R$ %.2f\n", valores_receita[6]);
+                    System.out.printf("Lucro unitário. . . . . : R$ %.2f\n\n", valores_receita[7]);
+                    System.out.printf("Lucro por receita . . . : %.2f%%\n", valores_receita[5]);
+
+                    String saida = "\nRESULTADO:\nDados os valores, a receita é ";
+                    if (valores_receita[4] <= 0.0) {
+                        saida += "IN";
+                    }
+                    saida += "VIÁVEL!\n";
+                    System.out.println(saida);
+
+                    System.out.println("\n---------------------------------------------------------------");
+                    // fim exibe_resultado -----------------------------------------------
+                }
+            }
+        } while (!sair);
+
+    }
+
+    // UTIL ------------------------------------------------------------------------------
+    /**
+     * Verifica se o texto é uma string vazia (Sem caracteres válidos).
+     *
+     * O caractere de espaço ' ' _é considerado inválido.
+     *
+     * @param texto Texto a ser analisado.
+     * @return true: string vazia; false: string não-vazia.
+     */
+    public static boolean string_vazia(String texto) {
+
+        texto = texto.trim();
+
+        if (texto.length() == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Verifica se o texto é uma string não-vazia que possa ser convertida para
+     * um número inteiro válido.
+     *
+     * @param texto Texto a ser analisado.
+     * @return true: válido; false: inválido.
+     */
+    public static boolean int_valido(String texto) {
+
+        texto = texto.trim();
+
+        if (string_vazia(texto)) {
+            return false;
+        }
+
+        try {
+            Integer.parseInt(texto);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Verifica se o texto é uma string não-vazia que possa ser convertido para
+     * um número inteiro, e se é uma opção válida.
+     *
+     * @param texto Texto a ser analisado.
+     * @param opcoes Vetor de opções válidas.
+     * @return true: opção válida; false: opção inválida.
+     */
+    public static boolean int_opcao_valida(String texto, int[] opcoes) {
+
+        if (!int_valido(texto)) {
+            return false;
+        }
+
+        if (opcoes.length > 0) {
+            for (int i = 0; i < opcoes.length; i++) {
+                if (Integer.parseInt(texto) == opcoes[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Verifica se o texto é uma string não-vazia que possa ser convertido para
+     * um número inteiro, e se o valor está contido em um intervalo.
+     *
+     * @param texto Texto a ser analisado.
+     * @param minimo Menor valor válido.
+     * @param maximo Maior valor válido.
+     * @return true: no intervalo; false: fora do intervalo.
+     */
+    public static boolean int_no_intervalo(String texto, int minimo, int maximo) {
+
+        if (!int_valido(texto)) {
+            return false;
+        }
+
+        if (Integer.parseInt(texto) < minimo || Integer.parseInt(texto) > maximo) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Verifica se o texto é uma string não-vazia que possa ser convertida para
+     * um número decimal válido do tipo double.
+     *
+     * @param texto Texto a ser analisado.
+     * @return true: válido; false: inválido.
+     */
+    public static boolean double_valido(String texto) {
+
+        texto = texto.trim();
+
+        if (string_vazia(texto)) {
+            return false;
+        }
+
+        try {
+            Double.parseDouble(texto);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static String repete(String texto, int quantidade) {
+        String ret = "";
+        for (int i = 0; i < quantidade; i++) {
+            ret += texto;
+        }
+        return ret;
+    }
+    // fim UTIL --------------------------------------------------------------------------
+}
